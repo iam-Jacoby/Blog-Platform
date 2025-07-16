@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts tagged {{ tag.name }}</title>
+</head>
+<body>
+    <h1>Posts tagged: #{{ tag.name }}</h1>
+
+    {% for post in posts %}
+        <h2><a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a></h2>
+        <p><em>by {{ post.author.username }} | {{ post.created_at }}</em></p>
+        <p>{{ post.content|truncatechars:200 }}</p>
+        <hr>
+    {% empty %}
+        <p>No posts found with this tag.</p>
+    {% endfor %}
+
+    <a href="{% url 'blog_list' %}">← Back to all posts</a>
+</body>
+</html>

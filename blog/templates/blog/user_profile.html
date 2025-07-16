@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user_profile.username }}'s Blog</title>
+</head>
+<body>
+    <h1>{{ user_profile.username }}'s Blog Posts</h1>
+
+    {% for post in posts %}
+        <div style="margin-bottom: 20px;">
+            <h2><a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a></h2>
+            <p><em>{{ post.created_at }}</em></p>
+            <p>{{ post.content|truncatechars:200 }}</p>
+        </div>
+        <hr>
+    {% empty %}
+        <p>This user hasn't posted anything yet.</p>
+    {% endfor %}
+
+    <a href="{% url 'blog_list' %}">← Back to all posts</a>
+</body>
+</html>

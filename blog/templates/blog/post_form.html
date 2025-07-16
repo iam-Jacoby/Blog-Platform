@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if edit %}Edit{% else %}New{% endif %} Post</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+</head>
+<body>
+    <h1>{% if edit %}Edit Post{% else %}Create New Post{% endif %}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.as_p }}
+        <button type="submit">{% if edit %}Update{% else %}Publish{% endif %}</button>
+    </form>
+
+    <a href="{% url 'blog_list' %}">← Back to posts</a>
+
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script>
+        const simplemde = new SimpleMDE({ element: document.getElementById("id_content") });
+
+        // Fix: Remove required attribute from hidden textarea
+        document.getElementById("id_content").required = false;
+
+        // Sync markdown content back before form submit
+        const form = document.querySelector("form");
+        form.addEventListener("submit", function () {
+            document.getElementById("id_content").value = simplemde.value();
+        });
+    </script>
+
+</body>
+</html>
