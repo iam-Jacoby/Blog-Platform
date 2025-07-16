@@ -9,5 +9,6 @@ urlpatterns = [
     path('post/<int:pk>/delete/', views.post_delete, name='post_delete'),
     path('users/<str:username>/', views.user_profile, name='user_profile'),
     path('tags/<slug:tag_slug>/', views.tagged_posts, name='tagged_posts'),
+    path('signup/', views.signup_view, name='signup'),
 
 ]
