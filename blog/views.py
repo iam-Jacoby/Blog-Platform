@@ -1,12 +1,13 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Post
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Post, Comment
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.models import User
 from taggit.models import Tag
 from django.db import models
+from django.core.paginator import Paginator
+from django.contrib.auth.forms import UserCreationForm
 
 
 def blog_list(request):
@@ -17,12 +18,42 @@ def blog_list(request):
         ).distinct()
     else:
         posts = Post.objects.all()
-    return render(request, 'blog/blog_list.html', {'posts': posts, 'query': query})
 
+    paginator = Paginator(posts, 5)  # Show 5 posts per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'blog/blog_list.html', {
+        'page_obj': page_obj,
+        'query': query,
+    })
 
 def blog_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/blog_detail.html', {'post': post})
+    comments = post.comments.order_by('-created_at')
+
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                print("✅ Comment form is valid")
+                comment = form.save(commit=False)
+                comment.post = post
+                comment.author = request.user
+                comment.save()
+                return redirect('blog_detail', pk=pk)
+            else:
+                print("❌ Comment form is invalid:", form.errors)
+        else:
+            return redirect('login')
+    else:
+        form = CommentForm()
+
+    return render(request, 'blog_detail.html', {
+        'post': post,
+        'comments': comments,
+        'form': form
+    })
 
 @login_required
 def post_create(request):
@@ -85,3 +116,13 @@ def tagged_posts(request, tag_slug):
     tag = get_object_or_404(Tag, slug=tag_slug)
     posts = Post.objects.filter(tags__in=[tag])
     return render(request, 'blog/tagged_posts.html', {'tag': tag, 'posts': posts})
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # or 'blog_list'
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})

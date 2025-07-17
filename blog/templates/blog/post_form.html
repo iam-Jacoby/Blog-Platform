@@ -1,35 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% if edit %}Edit{% else %}New{% endif %} Post</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-</head>
-<body>
-    <h1>{% if edit %}Edit Post{% else %}Create New Post{% endif %}</h1>
+{% extends 'base.html' %}
+{% load widget_tweaks %}
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
-        {{ form.as_p }}
-        <button type="submit">{% if edit %}Update{% else %}Publish{% endif %}</button>
-    </form>
 
-    <a href="{% url 'blog_list' %}">← Back to posts</a>
+{% block title %}
+    {% if edit %}Edit Post{% else %}New Post{% endif %}
+{% endblock %}
 
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-    <script>
-        const simplemde = new SimpleMDE({ element: document.getElementById("id_content") });
+{% block content %}
+<h1 class="mb-4">{% if edit %}Edit Post{% else %}Create New Post{% endif %}</h1>
 
-        // Fix: Remove required attribute from hidden textarea
-        document.getElementById("id_content").required = false;
+<form method="POST">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    
+    <div class="mb-3">
+        {{ form.title.label_tag }}
+        {{ form.title|add_class:"form-control" }}
+        {{ form.title.errors }}
+    </div>
 
-        // Sync markdown content back before form submit
-        const form = document.querySelector("form");
-        form.addEventListener("submit", function () {
-            document.getElementById("id_content").value = simplemde.value();
-        });
-    </script>
+    <div class="mb-3">
+        {{ form.content.label_tag }}
+        {{ form.content }}
+        {{ form.content.errors }}
+    </div>
 
-</body>
-</html>
+    {% if form.tags %}
+    <div class="mb-3">
+        {{ form.tags.label_tag }}
+        {{ form.tags|add_class:"form-control" }}
+        {{ form.tags.errors }}
+    </div>
+    {% endif %}
+
+    <button type="submit" class="btn btn-primary">
+        {% if edit %}Update{% else %}Publish{% endif %}
+    </button>
+    <a href="{% url 'blog_list' %}" class="btn btn-outline-secondary ms-2">← Cancel</a>
+</form>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script>
+    const simplemde = new SimpleMDE({ element: document.getElementById("id_content") });
+    document.getElementById("id_content").required = false;
+
+    document.querySelector("form").addEventListener("submit", function () {
+        document.getElementById("id_content").value = simplemde.value();
+    });
+</script>
+{% endblock %}

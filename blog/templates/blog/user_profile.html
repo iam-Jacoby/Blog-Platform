@@ -1,23 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ user_profile.username }}'s Blog</title>
-</head>
-<body>
-    <h1>{{ user_profile.username }}'s Blog Posts</h1>
+{% extends 'base.html' %}
 
-    {% for post in posts %}
-        <div style="margin-bottom: 20px;">
-            <h2><a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a></h2>
-            <p><em>{{ post.created_at }}</em></p>
-            <p>{{ post.content|truncatechars:200 }}</p>
+{% block title %}{{ user_profile.username }}'s Blog{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">{{ user_profile.username }}'s Blog Posts</h1>
+
+{% for post in posts %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h3><a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a></h3>
+            <small class="text-muted">{{ post.created_at|date:"F j, Y, g:i a" }}</small>
+            <p class="mt-2">{{ post.content|truncatechars:200 }}</p>
         </div>
-        <hr>
-    {% empty %}
-        <p>This user hasn't posted anything yet.</p>
-    {% endfor %}
+    </div>
+{% empty %}
+    <p class="text-muted">This user hasn't posted anything yet.</p>
+{% endfor %}
 
-    <a href="{% url 'blog_list' %}">← Back to all posts</a>
-</body>
-</html>
+<a href="{% url 'blog_list' %}" class="btn btn-outline-secondary mt-3">← Back to all posts</a>
+{% endblock %}

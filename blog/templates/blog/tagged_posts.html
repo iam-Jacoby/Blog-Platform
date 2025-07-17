@@ -1,21 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Posts tagged {{ tag.name }}</title>
-</head>
-<body>
-    <h1>Posts tagged: #{{ tag.name }}</h1>
+{% extends 'base.html' %}
+{% block title %}Posts tagged {{ tag.name }}{% endblock %}
 
-    {% for post in posts %}
-        <h2><a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a></h2>
-        <p><em>by {{ post.author.username }} | {{ post.created_at }}</em></p>
-        <p>{{ post.content|truncatechars:200 }}</p>
-        <hr>
-    {% empty %}
-        <p>No posts found with this tag.</p>
-    {% endfor %}
+{% block content %}
+<h1 class="mb-4">Posts tagged: <span class="badge bg-primary">#{{ tag.name }}</span></h1>
 
-    <a href="{% url 'blog_list' %}">← Back to all posts</a>
-</body>
-</html>
+{% for post in posts %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h3><a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a></h3>
+            <small class="text-muted">by {{ post.author.username }} on {{ post.created_at }}</small>
+            <p class="mt-2">{{ post.content|truncatechars:200 }}</p>
+        </div>
+    </div>
+{% empty %}
+    <p class="text-muted">No posts found with this tag.</p>
+{% endfor %}
+
+<a href="{% url 'blog_list' %}" class="btn btn-outline-secondary mt-3">← Back to all posts</a>
+{% endblock %}
