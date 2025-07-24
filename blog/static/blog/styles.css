@@ -1,0 +1,215 @@
+    :root {
+      --bg: #f8f9fa;
+      --text: #212529;
+      --card-bg: #fff;
+      --nav-bg: #343a40;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      margin: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      --bg: #121212;
+      --text: #e4e4e4;
+      --card-bg: #1e1e1e;
+      --nav-bg: #212529;
+    }
+
+    .navbar, .footer {
+      background-color: var(--nav-bg) !important;
+      color: white;
+    }
+
+    .navbar-brand, .nav-link {
+      color: #fff !important;
+    }
+
+    .nav-link:hover {
+      color: #ffc107 !important;
+    }
+
+    .footer {
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .content-wrapper {
+      flex: 1;
+      padding-top: 80px;
+    }
+
+    .search-form input {
+      border-radius: 20px;
+      padding-left: 15px;
+    }
+
+    .search-form button {
+      border-radius: 20px;
+    }
+
+    .card, .bg-white {
+      background-color: var(--card-bg) !important;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .comment-section {
+      background-color: #f0f4f8;
+      border-radius: 16px;
+      padding: 2rem;
+    }
+
+    .comment-card {
+      background-color: white;
+      border: 1px solid #dee2e6;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    textarea.form-control:focus {
+      border-color: #86b7fe;
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+
+    .btn-primary:hover {
+      background-color: #0d6efd;
+      box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+    }
+
+    /* Dark Mode Styling for Card Text */
+    body.dark-mode .card-title,
+    body.dark-mode .card-text,
+    body.dark-mode .card-subtitle {
+      color: #f0f0f0;
+    }
+
+    /* Toggle Switch Styling */
+    #darkModeToggle {
+      width: 60px;
+      height: 30px;
+      appearance: none;
+      background-color: #ccc;
+      border-radius: 30px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #darkModeToggle::before {
+      content: "☀️";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 26px;
+      height: 26px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    #darkModeToggle:checked::before {
+      transform: translateX(30px);
+      content: "🌙";
+    }
+
+    .form-check-input:focus {
+      box-shadow: none;
+    }
+
+    /* Dark Mode - Comment Section and Cards */
+    body.dark-mode .comment-section {
+    background-color: var(--card-bg);
+    color: var(--text);
+    }
+
+    body.dark-mode .comment-card {
+    background-color: #2a2a2a;
+    color: var(--text);
+    border-color: #444;
+    }
+
+    body.dark-mode .form-control,
+    body.dark-mode textarea.form-control {
+    /* background-color: #2a2a2a; */
+    color: #fff;
+    border-color: #555;
+    }
+
+    /* Author & Date Link (dark mode fix) */
+    body.dark-mode a {
+      color: #66b3ff;
+    }
+
+    /* You can make hover stand out too */
+    body.dark-mode a:hover {
+      color: #ffa500;
+    }
+
+    /* Page Info Text (fix for bottom pagination) */
+    .pagination-info {
+      color: var(--text); /* Uses appropriate color for light/dark */
+      font-size: 0.9rem;
+      margin: 1rem 0;
+    }
+
+    body.dark-mode .btn-outline-secondary {
+      color: #fff;
+      border-color: #aaa;
+    }
+
+    body.dark-mode .btn-outline-secondary:hover {
+      background-color: #555;
+    }
+
+    /* Comment Section Box Styling */
+    .comment-section-box {
+        background-color: #2a2a2a;
+        color: #f1f1f1;
+    }
+
+    /* Light mode fallback */
+    body:not(.dark-mode) .comment-section-box {
+        background-color: #f8f9fa;
+        color: #212529;
+    }
+
+    /* Fix for textarea in dark mode */
+    body.dark-mode .comment-textarea {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border-color: #555;
+    }
+
+    /* Optional: Light mode fallback (ensures contrast) */
+    body:not(.dark-mode) .comment-textarea {
+    background-color: #ffffff;
+    color: #212529;
+    }
+
+    /* Dark mode placeholder text fix */
+    body.dark-mode .comment-textarea::placeholder {
+    color: #cccccc; /* light gray for visibility */
+    opacity: 1;     /* ensures full visibility */
+    }
+
+    /* Optional: Light mode placeholder fallback */
+    body:not(.dark-mode) .comment-textarea::placeholder {
+    color: #6c757d; /* Bootstrap default placeholder */
+    }

@@ -30,20 +30,23 @@ def blog_list(request):
 
 def blog_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    comments = post.comments.order_by('-created_at')
+    comments_qs = Comment.objects.filter(post=post).order_by('-created_at')
+
+    paginator = Paginator(comments_qs, 5)
+    page_number = request.GET.get('page')
+    comments = paginator.get_page(page_number)
 
     if request.method == 'POST':
         if request.user.is_authenticated:
             form = CommentForm(request.POST)
             if form.is_valid():
-                print("✅ Comment form is valid")
                 comment = form.save(commit=False)
                 comment.post = post
                 comment.author = request.user
                 comment.save()
                 return redirect('blog_detail', pk=pk)
             else:
-                print("❌ Comment form is invalid:", form.errors)
+                print("❌ Form errors:", form.errors)
         else:
             return redirect('login')
     else:

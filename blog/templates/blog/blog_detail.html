@@ -37,9 +37,9 @@
     </div>
 
     <!-- Comment Section Wrapper -->
-    <div class="mt-5 p-4 rounded-4 shadow-sm">
+    <div class="mt-5 p-4 rounded-4 shadow-sm comment-section-box">
         <!-- Comments Header -->
-        <h4 class="fw-bold mb-4">💬 Comments ({{ comments.count }})</h4>
+        <h4 class="fw-bold mb-4">💬 Comments ({{ comments.paginator.count }})</h4>
 
         <!-- Individual Comments -->
         {% for comment in comments %}
@@ -51,8 +51,39 @@
                 <p class="mt-2 mb-0 text-secondary">{{ comment.content }}</p>
             </div>
         {% empty %}
-            <p class="text-muted">No comments yet.</p>
+            <p class="text">No comments yet.</p>
         {% endfor %}
+
+        <!-- Pagination -->
+        {% if comments.has_other_pages %}
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if comments.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ comments.previous_page_number }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                {% endif %}
+
+                {% for i in comments.paginator.page_range %}
+                    {% if comments.number == i %}
+                        <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if comments.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ comments.next_page_number }}">Next</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
 
         <!-- Comment Form -->
         {% if user.is_authenticated %}
@@ -74,10 +105,9 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <textarea name="content" id="id_content" rows="4" class="form-control shadow-sm" placeholder="Write your comment here...">{{ form.content.value }}</textarea>
+                    <textarea name="content" id="id_content" rows="4" class="form-control shadow-sm comment-textarea" placeholder="Write your comment here...">{{ form.content.value }}</textarea>
                 </div>
                 <button type="submit" class="btn btn-primary shadow-sm px-4">Post Comment</button>
-                
             </form>
         </div>
         {% else %}
