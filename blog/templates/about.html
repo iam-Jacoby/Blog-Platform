@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+  <h2>About Us</h2>
+  <p>This is a demo website created using Django. You can extend this page with your own content.</p>
+</div>
+
+<!-- Back Button -->
+<div class="mt-4 text-center">
+    <a href="{% url 'blog_list' %}" class="btn btn-outline-secondary rounded-pill px-4">← Back to all posts</a>
+</div>
+{% endblock %}

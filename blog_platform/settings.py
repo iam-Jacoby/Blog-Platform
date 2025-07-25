@@ -134,3 +134,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'login'  # or 'blog_list' or any named URL
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For testing
+DEFAULT_FROM_EMAIL = 'webmaster@localhost'

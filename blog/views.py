@@ -8,7 +8,8 @@ from taggit.models import Tag
 from django.db import models
 from django.core.paginator import Paginator
 from django.contrib.auth.forms import UserCreationForm
-
+from django.core.mail import send_mail
+from django.conf import settings
 
 def blog_list(request):
     query = request.GET.get('q')
@@ -129,3 +130,25 @@ def signup_view(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
+
+def about_view(request):
+    return render(request, 'about.html')
+
+def contact_view(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        # You can customize this logic for saving/sending
+        send_mail(
+            f'Message from {name}',
+            message,
+            email,
+            [settings.DEFAULT_FROM_EMAIL],
+            fail_silently=False,
+        )
+
+        return render(request, 'contact.html', {'success': True})
+
+    return render(request, 'contact.html')

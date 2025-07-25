@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+  <h2>Contact Us</h2>
+  
+  {% if success %}
+    <div class="alert alert-success">Your message has been sent successfully!</div>
+  {% endif %}
+
+  <form method="post" class="mt-4">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="name">Name:</label>
+      <input type="text" class="form-control" name="name" required>
+    </div>
+    <div class="mb-3">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control" name="email" required>
+    </div>
+    <div class="mb-3">
+      <label for="message">Message:</label>
+      <textarea class="form-control" name="message" rows="4" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Send</button>
+  </form>
+</div>
+
+<!-- Back Button -->
+<div class="mt-4 text-center">
+    <a href="{% url 'blog_list' %}" class="btn btn-outline-secondary rounded-pill px-4">← Back to all posts</a>
+</div>
+{% endblock %}
