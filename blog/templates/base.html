@@ -19,42 +19,81 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top px-3 justify-content-between">
-    <div class="container-fluid px-4">
-      <a class="navbar-brand ms-3" href="/">My Blog</a>
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top px-3">
+  <div class="container-fluid d-flex align-items-center justify-content-between">
 
-      <!-- Centered & Wider Search Bar -->
-        <div class="d-flex mx-auto" style="max-width: 600px; width: 100%;">
-        <form class="d-flex w-100 search-form" role="search" method="GET" action="{% url 'blog_list' %}">
-            <input class="form-control me-2 flex-grow-1" type="search" name="q" placeholder="Search posts..." aria-label="Search">
-            <button class="btn btn-outline-warning" type="submit">Search</button>
-        </form>
+    <!-- Brand -->
+    <a class="navbar-brand me-3" href="/">My Blog</a>
+
+    <!-- Search Bar (Center - visible on large screens) -->
+    <div class="d-none d-lg-block flex-grow-1 mx-3" style="max-width: 600px;">
+      <form class="d-flex w-100 search-form" role="search" method="GET" action="{% url 'blog_list' %}">
+        <div class="input-group w-100">
+          <input class="form-control me-2" type="search" name="q" placeholder="Search posts..." aria-label="Search">
+          <button class="btn btn-outline-warning" type="submit">
+            <i class="bi bi-search"></i>
+          </button>
         </div>
-
-      <!-- Right Side Controls -->
-      <div class="d-flex ms-auto me-3 align-items-center gap-3">
-
-        <!-- Dark Mode Toggle -->
-        <div class="form-check form-switch position-relative">
-          <input class="form-check-input" type="checkbox" id="darkModeToggle">
-        </div>
-
-        <!-- Extra Links -->
-        <a class="nav-link d-inline" href="#">About</a>
-        <a class="nav-link d-inline" href="#">Contact</a>
-        {% if user.is_authenticated %}
-            <span class="navbar-text text-white me-2">Hello, {{ user.username }}!</span>
-            <form method="post" action="{% url 'logout' %}" class="d-inline">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-outline-warning btn-sm">Logout</button>
-            </form>
-        {% else %}
-            <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}">Login</a>
-        {% endif %}
-      </div>
+      </form>
     </div>
-  </nav>
+
+    <!-- Right Side: Toggle, Greeting, Hamburger -->
+    <div class="d-flex align-items-center gap-3">
+
+      <!-- Dark Mode Toggle -->
+      <div class="form-check form-switch mb-0">
+        <input class="form-check-input" type="checkbox" id="darkModeToggle">
+      </div>
+
+      <!-- Greeting -->
+      {% if user.is_authenticated %}
+        <span class="navbar-text text-white d-none d-sm-inline">Hello, {{ user.username }}!</span>
+      {% endif %}
+
+      <!-- Hamburger Toggle -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
+    <!-- Collapsible Content -->
+    <div class="collapse navbar-collapse justify-content-end mt-2 mt-lg-0" id="navbarContent">
+
+      <!-- Search bar (only on small screens) -->
+      <div class="d-lg-none my-2 w-100">
+        <form class="d-flex w-100 search-form" role="search" method="GET" action="{% url 'blog_list' %}">
+          <div class="input-group w-100">
+            <input class="form-control me-2" type="search" name="q" placeholder="Search posts..." aria-label="Search">
+            <button class="btn btn-outline-warning" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Nav Links -->
+      <ul class="navbar-nav ms-auto gap-2">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'about' %}">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+        </li>
+        <li class="nav-item">
+          {% if user.is_authenticated %}
+            <form method="post" action="{% url 'logout' %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-warning btn-sm">Logout</button>
+            </form>
+          {% else %}
+            <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}">Login</a>
+          {% endif %}
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
   <!-- Page Content -->
   <div class="content-wrapper container">

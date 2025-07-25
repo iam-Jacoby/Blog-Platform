@@ -213,3 +213,16 @@
     body:not(.dark-mode) .comment-textarea::placeholder {
     color: #6c757d; /* Bootstrap default placeholder */
     }
+
+/* Custom Dark Mode using .dark-mode class */
+body.dark-mode input,
+body.dark-mode textarea {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+  border: 1px solid #444;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: #aaa;
+}
